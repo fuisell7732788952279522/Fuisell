@@ -68,14 +68,17 @@
         }
         .back-btn:hover { background: white; color: black; }
 
-        .detail-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+        .detail-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 80px; }
         .detail-img { position: sticky; top: 180px; height: 800px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
         .detail-img img { width: 100%; height: 100%; object-fit: cover;}
         
-        .spec-table { width: 100%; border-collapse: collapse; margin: 30px 0; font-size: 0.9rem; }
-        .spec-table td { padding: 15px 0; border-bottom: 1px solid #222; }
-        .spec-key { opacity: 0.5; width: 40%; }
-        
+        .star-rating { color: #ffd700; font-size: 1.2rem; margin-bottom: 15px; letter-spacing: 2px; }
+        .long-desc { opacity: 0.7; margin-top: 30px; font-size: 1rem; line-height: 1.8; border-top: 1px solid #222; padding-top: 30px; }
+
+        /* Suggestions Section */
+        .suggestion-section { margin-top: 100px; border-top: 1px solid var(--border); padding-top: 50px; }
+        .suggestion-header { font-family: 'Syne', sans-serif; font-size: 1.5rem; margin-bottom: 40px; text-transform: uppercase; }
+
         /* Size Selector Styling */
         .size-wrapper { margin-bottom: 30px; }
         .size-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; opacity: 0.5; margin-bottom: 15px; display: block; }
@@ -87,10 +90,6 @@
         }
         .size-opt:hover { border-color: #666; color: white; }
         .size-opt.active { background: white; color: black; border-color: white; }
-
-        .review-box { margin-top: 50px; padding-top: 40px; border-top: 1px solid var(--border); }
-        .review-item { margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px solid #1a1a1a; }
-        .stars { color: #ffd700; letter-spacing: 2px; font-size: 0.9rem; }
 
         /* --- Cart Drawer --- */
         .drawer { 
@@ -128,7 +127,8 @@
         .wheel-wrap { position: relative; text-align: center; }
         #wheelCanvas { transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1); will-change: transform; }
         .triangle { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 30px solid var(--accent); z-index: 10; }
-          /* --- Footer --- */
+        
+        /* --- Footer --- */
         footer { 
             background: #000; border-top: 1px solid var(--border); padding: 80px 5% 40px; margin-top: 100px; 
             display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; 
@@ -136,32 +136,30 @@
         .footer-col h4 { opacity: 0.4; margin-bottom: 25px; font-size: 0.8rem; letter-spacing: 2px; }
         .footer-link { display: block; color: white; text-decoration: none; margin-bottom: 15px; opacity: 0.7; transition: 0.3s; font-size: 0.9rem; }
         .footer-link:hover { opacity: 1; transform: translateX(5px); }
+        
         /* --- Search Bar Styling --- */
-.search-container {
-    display: flex;
-    align-items: center;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 5px 20px;
-    border-radius: 50px;
-    margin-left: 20px;
-    transition: 0.3s;
-}
-.search-container:focus-within {
-    border-color: var(--accent);
-}
-.search-input {
-    background: transparent;
-    border: none;
-    color: white;
-    padding: 8px;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.8rem;
-    outline: none;
-    width: 150px;
-    margin-bottom: 0; /* Override global input margin */
-}
-
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 5px 20px;
+            border-radius: 50px;
+            margin-left: 20px;
+            transition: 0.3s;
+        }
+        .search-container:focus-within { border-color: var(--accent); }
+        .search-input {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            outline: none;
+            width: 150px;
+            margin-bottom: 0; 
+        }
     </style>
 </head>
 <body>
@@ -182,7 +180,6 @@
         <input type="text" id="searchInput" class="search-input" placeholder="..." onkeyup="handleSearch()">
     </div>
 </nav>
-
 
 <main id="home" class="view active">
     <div class="container">
@@ -242,15 +239,104 @@
 </div>
 
 <script>
+    // Updated Products Array with 'rating' and 'longDesc'
     const products = [
-        { id: 101, cat: "Outerwear", name: "Obsidian Tech Parka", price: 850, sizes: ["S", "M", "L", "XL"], img: "https://images.unsplash.com/photo-1544923246-77307dd654cb?w=1000", desc: "Brutalist silhouette, 3-layer GORE-TEX Pro.", specs: {"Material": "Gore-Tex", "Fit": "Oversized"} },
-        { id: 102, cat: "Tops", name: "Vantablack Heavy Tee", price: 120, sizes: ["S", "M", "L", "XL"], img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1000", desc: "400GSM Organic Heavyweight Cotton.", specs: {"Material": "Cotton", "Fit": "Boxy"} },
-        { id: 103, cat: "Accessories", name: "Utility Chest Rig", price: 340, sizes: ["One Size"], img: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=1000", desc: "Ballistic Nylon tactical gear.", specs: {"Material": "1000D Nylon", "Origin": "Japan"} },
-        { id: 104, cat: "Outerwear", name: "Kinetic Shell 01", price: 620, sizes: ["S", "M", "L"], img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=1000", desc: "A razor-sharp silhouette designed for movement. The articulation in the sleeves allows for total range of motion without the fabric bunching, while the matte carbon finish deflects light in a way that feels almost stealth-like.", specs: {"Material": "Carbon-Coated Nylon", "Waterproof": "20k/20k"} },
-{ id: 105, cat: "Bottoms", name: "Modular Cargo Pant", price: 480, sizes: ["28", "30", "32", "34"], img: "https://images.unsplash.com/photo-1624371414361-e6e0ed295270?w=1000", desc: "These aren't your standard cargos. Built with 14 integrated pockets that disappear into the leg line, they offer a futuristic 'tapered-tech' look. The fabric has a substantial weight but stays cool against the skin.", specs: {"Material": "Schoeller Dryskin", "Fit": "Articulated Taper"} },
-{ id: 106, cat: "Mid-Layer", name: "Void-Knit Pullover", price: 290, sizes: ["M", "L", "XL"], img: "https://images.unsplash.com/photo-1614975058789-41316d0e2e9c?w=1000", desc: "A masterclass in texture. This pullover features a 3D-ribbed structure that creates natural air pockets for insulation. It sits heavy on the body, providing a sense of physical security and warmth in a deep, light-absorbing black.", specs: {"Material": "Merino/Polyamide", "Knit": "3D Seamless"} },
-{ id: 107, cat: "Outerwear", name: "Fragment Bomber", price: 740, sizes: ["S", "M", "L", "XL"], img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=1000", desc: "Industrial aesthetics meet luxury craftsmanship. The outer shell is made from high-tenacity Dyneema that has been hand-washed to give it a lived-in, 'scrap-yard' patina while remaining virtually indestructible.", specs: {"Material": "Distressed Dyneema", "Lining": "Silk/Nylon"} },
-{ id: 108, cat: "Tops", name: "Ghost-Stitch Overshirt", price: 310, sizes: ["S", "M", "L"], img: "https://images.unsplash.com/photo-1507680434567-5739c8a21e71?w=1000", desc: "A structural overshirt with hidden snap closures and internal 'sling' straps. When unbuttoned, the collar maintains a rigid, architectural shape that frames the face perfectly.", specs: {"Material": "Ventile Cotton", "Hardware": "Cobra Snaps"} }
+        { 
+            id: 101, 
+            cat: "Outerwear", 
+            name: "Obsidian Tech Parka", 
+            price: 850, 
+            rating: 4.8,
+            sizes: ["S", "M", "L", "XL"], 
+            img: "https://images.unsplash.com/photo-1544923246-77307dd654cb?w=1000", 
+            desc: "Brutalist silhouette, 3-layer GORE-TEX Pro.", 
+            longDesc: "The Obsidian Tech Parka represents the apex of utilitarian protection. Engineered with a proprietary 3-layer GORE-TEX Pro membrane, it offers industry-leading waterproofing while maintaining exceptional breathability. The brutalist silhouette conceals a complex system of internal tension straps, allowing the wearer to adjust the drape and thermal retention of the garment. Featuring magnetic Cobra buckle closures and a fully articulated hood designed to accommodate ballistic helmets or headphones, this is armor for the modern metropolis.",
+            specs: {"Material": "Gore-Tex", "Fit": "Oversized"} 
+        },
+        { 
+            id: 102, 
+            cat: "Tops", 
+            name: "Vantablack Heavy Tee", 
+            price: 120, 
+            rating: 4.5,
+            sizes: ["S", "M", "L", "XL"], 
+            img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1000", 
+            desc: "400GSM Organic Heavyweight Cotton.", 
+            longDesc: "Redefining the staple, the Vantablack Heavy Tee is constructed from dense, 400GSM organic cotton that has been mercerized to achieve a finish that absorbs light rather than reflecting it. The boxy, anti-fit cut stands away from the body to create airflow, while the reinforced collar ensures the neckline never loses its structural integrity. It is not just a t-shirt; it is a fundamental building block of the architectural wardrobe.",
+            specs: {"Material": "Cotton", "Fit": "Boxy"} 
+        },
+        { 
+            id: 103, 
+            cat: "Accessories", 
+            name: "Utility Chest Rig", 
+            price: 340, 
+            rating: 4.9,
+            sizes: ["One Size"], 
+            img: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=1000", 
+            desc: "Ballistic Nylon tactical gear.", 
+            longDesc: "Inspired by special operations equipment, the Utility Chest Rig is stripped of excess and optimized for urban mobility. Fabricated from 1000D Cordura Ballistic Nylon, it is virtually impervious to tears and abrasions. The modular layout features three expandable primary pouches and a hidden document compartment close to the body. The harness system uses climbing-grade webbing and is fully adjustable to be worn over heavy outerwear or light tees.",
+            specs: {"Material": "1000D Nylon", "Origin": "Japan"} 
+        },
+        { 
+            id: 104, 
+            cat: "Outerwear", 
+            name: "Kinetic Shell 01", 
+            price: 620, 
+            rating: 4.7,
+            sizes: ["S", "M", "L"], 
+            img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=1000", 
+            desc: "A razor-sharp silhouette designed for movement.", 
+            longDesc: "A razor-sharp silhouette designed for kinetic movement. The articulation in the sleeves uses a spiral-seam construction to allow for total range of motion without the fabric bunching or riding up. The exterior is treated with a matte carbon coating that deflects light in a way that feels almost stealth-like, while providing 20k/20k waterproof and breathability ratings. Includes underarm vents and a storm-flap zipper.",
+            specs: {"Material": "Carbon-Coated Nylon", "Waterproof": "20k/20k"} 
+        },
+        { 
+            id: 105, 
+            cat: "Bottoms", 
+            name: "Modular Cargo Pant", 
+            price: 480, 
+            rating: 4.6,
+            sizes: ["28", "30", "32", "34"], 
+            img: "https://images.unsplash.com/photo-1624371414361-e6e0ed295270?w=1000", 
+            desc: "These aren't your standard cargos.", 
+            longDesc: "These aren't your standard cargos. Built with 14 integrated pockets that disappear into the leg line using invisible zippers, they offer a futuristic 'tapered-tech' look without the bulk of traditional cargo pants. The Schoeller Dryskin fabric has a substantial weight but utilizes 4-way stretch technology to stay cool against the skin and move with you. Features a magnetic fidlock belt buckle.",
+            specs: {"Material": "Schoeller Dryskin", "Fit": "Articulated Taper"} 
+        },
+        { 
+            id: 106, 
+            cat: "Mid-Layer", 
+            name: "Void-Knit Pullover", 
+            price: 290, 
+            rating: 5.0,
+            sizes: ["M", "L", "XL"], 
+            img: "https://images.unsplash.com/photo-1614975058789-41316d0e2e9c?w=1000", 
+            desc: "A masterclass in texture.", 
+            longDesc: "A masterclass in texture. This pullover features a 3D-ribbed structure created through whole-garment knitting, which eliminates seams entirely. The structure creates natural air pockets for insulation, providing exceptional warmth-to-weight ratio. It sits heavy on the body, providing a sense of physical security and warmth in a deep, light-absorbing black hue that pairs perfectly under shell jackets.",
+            specs: {"Material": "Merino/Polyamide", "Knit": "3D Seamless"} 
+        },
+        { 
+            id: 107, 
+            cat: "Outerwear", 
+            name: "Fragment Bomber", 
+            price: 740, 
+            rating: 4.4,
+            sizes: ["S", "M", "L", "XL"], 
+            img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=1000", 
+            desc: "Industrial aesthetics meet luxury craftsmanship.", 
+            longDesc: "Industrial aesthetics meet luxury craftsmanship. The outer shell is made from high-tenacity Dyneema that has been hand-washed and tumbled with volcanic stones to give it a lived-in, 'scrap-yard' patina while remaining virtually indestructible. The interior is lined with a smooth silk-nylon blend for comfort. Features oversized heavy-duty zippers and a cropped fit intended for layering.",
+            specs: {"Material": "Distressed Dyneema", "Lining": "Silk/Nylon"} 
+        },
+        { 
+            id: 108, 
+            cat: "Tops", 
+            name: "Ghost-Stitch Overshirt", 
+            price: 310, 
+            rating: 4.8,
+            sizes: ["S", "M", "L"], 
+            img: "https://images.unsplash.com/photo-1507680434567-5739c8a21e71?w=1000", 
+            desc: "A structural overshirt with hidden snap closures.", 
+            longDesc: "A structural overshirt with hidden snap closures and internal 'sling' straps that allow the jacket to be worn like a backpack when the temperature rises. When unbuttoned, the collar maintains a rigid, architectural shape that frames the face perfectly. The Ventile cotton construction is densely woven to be water-repellent without the use of synthetic coatings.",
+            specs: {"Material": "Ventile Cotton", "Hardware": "Cobra Snaps"} 
+        }
     ];
 
     let cart = [];
@@ -273,25 +359,58 @@
         `).join('');
     }
 
+    // Function to generate stars
+    function getStars(rating) {
+        const full = Math.floor(rating);
+        const half = rating % 1 >= 0.5 ? 1 : 0;
+        const empty = 5 - full - half;
+        return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(empty);
+    }
+
     function openProduct(id) {
         const p = products.find(x => x.id === id);
         selectedSize = null;
         let sizeBtns = p.sizes.map(s => `<div class="size-opt" onclick="setProductSize(this, '${s}')">${s}</div>`).join('');
+        
+        // Generate Related Products (Suggestions)
+        const suggestions = products
+            .filter(item => item.cat === p.cat && item.id !== p.id) // Same category, different item
+            .slice(0, 3) // Limit to 3 items
+            .map(item => `
+                <div class="card" onclick="openProduct(${item.id})">
+                    <div class="card-img" style="aspect-ratio:1/1;"><img src="${item.img}"></div>
+                    <div class="card-info" style="font-size:0.9rem;">
+                        <div><b>${item.name}</b></div>
+                        <div>$${item.price}</div>
+                    </div>
+                </div>
+            `).join('');
+
+        const suggestionHTML = suggestions ? `
+            <div class="suggestion-section">
+                <div class="suggestion-header">Curated For You</div>
+                <div class="grid">${suggestions}</div>
+            </div>
+        ` : '';
 
         document.getElementById('detail-content').innerHTML = `
             <div class="detail-layout">
                 <div class="detail-img"><img src="${p.img}"></div>
                 <div>
                     <h1>${p.name}</h1>
+                    <div class="star-rating">${getStars(p.rating)} <span style="font-size:0.8rem; opacity:0.5; margin-left:10px;">(${p.rating})</span></div>
                     <div style="font-size:2rem; margin-bottom:20px;">$${p.price}</div>
                     <div class="size-wrapper">
                         <span class="size-label">SELECT SIZE</span>
                         <div class="size-grid">${sizeBtns}</div>
                     </div>
                     <button class="btn-full" id="atc-btn" onclick="addToCart(${p.id})">ADD TO CART</button>
-                    <p style="margin-top:30px; opacity:0.8;">${p.desc}</p>
+                    <div class="long-desc">${p.longDesc}</div>
                 </div>
-            </div>`;
+            </div>
+            ${suggestionHTML}
+            `;
+            
         document.getElementById('home').classList.remove('active');
         document.getElementById('detail').classList.add('active');
         window.scrollTo(0,0);
@@ -364,7 +483,6 @@
         const orderId = "FSL-" + Math.floor(Math.random()*9000+1000);
         const total = document.getElementById('summ-total').innerText;
         
-        // Build the item list with sizes for WhatsApp
         let itemsString = cart.map(i => `- ${i.name} (Size: ${i.size})`).join('%0A');
         
         const message = `*FUISELL NEW ORDER: ${orderId}*%0A%0A` +
@@ -411,37 +529,33 @@
             document.getElementById('wheelModal').style.display='flex';
         }, 15000);
     }
-    // Function to handle category filtering
-function filterGrid(category, element) {
-    // UI Update
-    document.querySelectorAll('.cat-item').forEach(item => item.classList.remove('active'));
-    element.classList.add('active');
-    document.getElementById('searchInput').value = ''; // Clear search when category changes
 
-    if (category === 'All') {
-        renderGrid(products);
-    } else {
-        const filtered = products.filter(p => p.cat === category);
+    function filterGrid(category, element) {
+        document.querySelectorAll('.cat-item').forEach(item => item.classList.remove('active'));
+        element.classList.add('active');
+        document.getElementById('searchInput').value = ''; 
+
+        if (category === 'All') {
+            renderGrid(products);
+        } else {
+            const filtered = products.filter(p => p.cat === category);
+            renderGrid(filtered);
+        }
+    }
+
+    function handleSearch() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        document.querySelectorAll('.cat-item').forEach(item => item.classList.remove('active'));
+        document.querySelector('.cat-item').classList.add('active');
+
+        const filtered = products.filter(p => 
+            p.name.toLowerCase().includes(query) || 
+            p.cat.toLowerCase().includes(query) ||
+            p.desc.toLowerCase().includes(query)
+        );
+        
         renderGrid(filtered);
     }
-}
-
-// Function to handle search input
-function handleSearch() {
-    const query = document.getElementById('searchInput').value.toLowerCase();
-    
-    // Reset active category UI to 'ALL' when searching
-    document.querySelectorAll('.cat-item').forEach(item => item.classList.remove('active'));
-    document.querySelector('.cat-item').classList.add('active');
-
-    const filtered = products.filter(p => 
-        p.name.toLowerCase().includes(query) || 
-        p.cat.toLowerCase().includes(query) ||
-        p.desc.toLowerCase().includes(query)
-    );
-    
-    renderGrid(filtered);
-}
 
 </script>
     <footer>
