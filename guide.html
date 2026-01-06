@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    .size-guide-container {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        max-width: 900px;
+        margin: 20px auto;
+        color: #333;
+    }
+    .size-table-wrapper {
+        overflow-x: auto; /* Ensures table is scrollable on mobile */
+        margin-bottom: 30px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+    th {
+        background-color: #000;
+        color: #fff;
+        padding: 15px;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+    }
+    td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #eee;
+    }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+
+    .measuring-tips {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        background: #f4f4f4;
+        padding: 25px;
+        border-radius: 8px;
+    }
+    .tip-box h4 { margin-top: 0; text-transform: uppercase; font-size: 0.9rem; }
+    .tip-box p { font-size: 0.85rem; color: #555; margin-bottom: 0; }
+
+    @media (max-width: 600px) {
+        .measuring-tips { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+<body>
+
+<div class="size-guide-container">
+    <h2>Size Guide</h2>
+    <p>Please measure carefully. Due to our <strong>2-day return policy</strong>, ensuring the correct fit at checkout is essential.</p>
+
+    <div class="size-table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Size</th>
+                    <th>Chest (inches)</th>
+                    <th>Waist (inches)</th>
+                    <th>Length (inches)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Small (S)</td>
+                    <td>34 - 36</td>
+                    <td>28 - 30</td>
+                    <td>27</td>
+                </tr>
+                <tr>
+                    <td>Medium (M)</td>
+                    <td>38 - 40</td>
+                    <td>32 - 34</td>
+                    <td>28</td>
+                </tr>
+                <tr>
+                    <td>Large (L)</td>
+                    <td>42 - 44</td>
+                    <td>36 - 38</td>
+                    <td>29</td>
+                </tr>
+                <tr>
+                    <td>X-Large (XL)</td>
+                    <td>46 - 48</td>
+                    <td>40 - 42</td>
+                    <td>30</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="measuring-tips">
+        <div class="tip-box">
+            <h4>1. Chest</h4>
+            <p>Measure around the fullest part of your chest, keeping the tape horizontal.</p>
+        </div>
+        <div class="tip-box">
+            <h4>2. Waist</h4>
+            <p>Measure around the narrowest part (typically where your body bends side to side).</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

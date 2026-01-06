@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    .care-container {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        max-width: 800px;
+        margin: 20px auto;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 30px;
+        background-color: #fff;
+    }
+    .care-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .care-header h2 {
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+    .care-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 20px;
+    }
+    .care-item {
+        text-align: center;
+        padding: 15px;
+        border: 1px solid #f0f0f0;
+        border-radius: 8px;
+        transition: transform 0.2s;
+    }
+    .care-item:hover {
+        transform: translateY(-5px);
+        border-color: #333;
+    }
+    .care-icon {
+        font-size: 24px;
+        margin-bottom: 10px;
+        display: block;
+    }
+    .care-title {
+        font-weight: bold;
+        font-size: 0.9rem;
+        display: block;
+        margin-bottom: 5px;
+    }
+    .care-desc {
+        font-size: 0.8rem;
+        color: #666;
+    }
+</style>
+</head>
+<body>
+
+<div class="care-container">
+    <div class="care-header">
+        <h2>Garment Care Instructions</h2>
+        <p>Follow these steps to ensure your pieces last a lifetime.</p>
+    </div>
+
+    <div class="care-grid">
+        <div class="care-item">
+            <span class="care-icon"></span>
+            <span class="care-title">WASH COLD</span>
+            <span class="care-desc">Machine wash cold with like colors to prevent fading.</span>
+        </div>
+
+        <div class="care-item">
+            <span class="care-icon"></span>
+            <span class="care-title">HANG DRY</span>
+            <span class="care-desc">Avoid the dryer. Air dry to maintain shape and fit.</span>
+        </div>
+
+        <div class="care-item">
+            <span class="care-icon"></span>
+            <span class="care-title">NO BLEACH</span>
+            <span class="care-desc">Do not use harsh chemicals or chlorine bleach.</span>
+        </div>
+
+        <div class="care-item">
+            <span class="care-icon"></span>
+            <span class="care-title">STEAM ONLY</span>
+            <span class="care-desc">Use a steamer or iron on low heat if necessary.</span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

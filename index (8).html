@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUISELL | 2026 Architectural Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --bg: #050505; --text: #ffffff; --accent: #3b82f6; 
+            --glass: rgba(255, 255, 255, 0.05); --border: rgba(255, 255, 255, 0.15);
+            --surface: #111111;
+        }
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body { 
+            margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text);
+            overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6;
+        }
+        h1, h2, h3, .logo, .btn-main { font-family: 'Syne', sans-serif; text-transform: uppercase; }
+
+        /* --- Global Header --- */
+        header {
+            position: fixed; top: 0; width: 100%; height: 90px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; z-index: 1000; background: rgba(5,5,5,0.9); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: 6px; cursor: pointer; }
+        .cart-trigger { 
+            background: white; color: black; padding: 12px 28px; border-radius: 50px; 
+            font-weight: 700; font-size: 0.75rem; border: none; cursor: pointer; transition: 0.3s; 
+        }
+        .cart-trigger:hover { transform: scale(1.05); }
+
+        /* --- Category Navigation --- */
+        .cat-nav {
+            position: fixed; top: 90px; width: 100%; z-index: 999;
+            display: flex; justify-content: center; gap: 40px; padding: 20px;
+            background: rgba(5,5,5,0.95); border-bottom: 1px solid var(--border);
+        }
+        .cat-item { font-size: 0.75rem; font-weight: 700; opacity: 0.5; cursor: pointer; transition: 0.3s; letter-spacing: 2px; }
+        .cat-item.active { opacity: 1; color: white; text-decoration: underline; text-underline-offset: 6px; }
+
+        /* --- Layout System --- */
+        .view { display: none; padding-top: 180px; padding-bottom: 50px; min-height: 100vh; animation: fadeIn 0.6s ease; }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .container { max-width: 1400px; margin: auto; padding: 0 5%; }
+
+        /* --- Product Grid --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; }
+        .card { cursor: pointer; }
+        .card-img {
+            width: 100%; aspect-ratio: 3/4; background: var(--surface); border-radius: 6px; overflow: hidden;
+            border: 1px solid var(--border); position: relative; transition: 0.5s;
+        }
+        .card:hover .card-img { transform: translateY(-10px); border-color: rgba(255,255,255,0.4); }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.7s; filter: saturate(0); }
+        .card:hover img { transform: scale(1.05); filter: saturate(1); }
+        .card-info { margin-top: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+
+        /* --- Detail View --- */
+        .back-btn { 
+            display: inline-flex; align-items: center; gap: 10px; padding: 10px 20px; 
+            border: 1px solid var(--border); border-radius: 30px; margin-bottom: 40px; 
+            cursor: pointer; font-size: 0.8rem; font-weight: 700; transition: 0.3s;
+        }
+        .back-btn:hover { background: white; color: black; }
+
+        .detail-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+        .detail-img { position: sticky; top: 180px; height: 800px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+        .detail-img img { width: 100%; height: 100%; object-fit: cover;}
+        
+        .spec-table { width: 100%; border-collapse: collapse; margin: 30px 0; font-size: 0.9rem; }
+        .spec-table td { padding: 15px 0; border-bottom: 1px solid #222; }
+        .spec-key { opacity: 0.5; width: 40%; }
+        
+        /* Size Selector Styling */
+        .size-wrapper { margin-bottom: 30px; }
+        .size-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; opacity: 0.5; margin-bottom: 15px; display: block; }
+        .size-grid { display: flex; gap: 10px; flex-wrap: wrap; }
+        .size-opt {
+            border: 1px solid #333; color: #666; padding: 12px 24px; cursor: pointer;
+            font-family: 'Syne', sans-serif; font-weight: 700; transition: 0.2s;
+            min-width: 60px; text-align: center; border-radius: 4px;
+        }
+        .size-opt:hover { border-color: #666; color: white; }
+        .size-opt.active { background: white; color: black; border-color: white; }
+
+        .review-box { margin-top: 50px; padding-top: 40px; border-top: 1px solid var(--border); }
+        .review-item { margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px solid #1a1a1a; }
+        .stars { color: #ffd700; letter-spacing: 2px; font-size: 0.9rem; }
+
+        /* --- Cart Drawer --- */
+        .drawer { 
+            position: fixed; top: 0; right: 0; width: 500px; height: 100%; background: #0a0a0a; 
+            border-left: 1px solid var(--border); z-index: 3000; transform: translateX(100%); 
+            transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); padding: 40px; display: flex; flex-direction: column; 
+        }
+        .drawer.open { transform: translateX(0); }
+        
+        .close-cart { 
+            position: absolute; top: 30px; right: 30px; width: 40px; height: 40px; 
+            border: 1px solid #333; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; transition: 0.3s; font-size: 1.2rem;
+        }
+        .close-cart:hover { background: white; color: black; border-color: white; }
+
+        .cart-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid #222; }
+        .subtotal-row { display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; }
+
+        /* --- Modals --- */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 5000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        .modal-box { width: 100%; max-width: 550px; background: #111; padding: 50px; border: 1px solid var(--border); border-radius: 20px; max-height: 90vh; overflow-y: auto; }
+        
+        input { 
+            width: 100%; background: #000; border: 1px solid #333; color: white; padding: 18px; 
+            margin-bottom: 15px; font-family: inherit; outline: none; transition: 0.3s; border-radius: 8px;
+        }
+        .btn-full { 
+            width: 100%; background: white; color: black; padding: 20px; border: none; 
+            font-weight: 800; cursor: pointer; border-radius: 8px; font-size: 0.9rem; text-transform: uppercase;
+        }
+        .btn-full.error { background: #ff4444; color: white; }
+
+        /* --- Wheel --- */
+        .wheel-wrap { position: relative; text-align: center; }
+        #wheelCanvas { transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1); will-change: transform; }
+        .triangle { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 30px solid var(--accent); z-index: 10; }
+          /* --- Footer --- */
+        footer { 
+            background: #000; border-top: 1px solid var(--border); padding: 80px 5% 40px; margin-top: 100px; 
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; 
+        }
+        .footer-col h4 { opacity: 0.4; margin-bottom: 25px; font-size: 0.8rem; letter-spacing: 2px; }
+        .footer-link { display: block; color: white; text-decoration: none; margin-bottom: 15px; opacity: 0.7; transition: 0.3s; font-size: 0.9rem; }
+        .footer-link:hover { opacity: 1; transform: translateX(5px); }
+        /* --- Search Bar Styling --- */
+.search-container {
+    display: flex;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 5px 20px;
+    border-radius: 50px;
+    margin-left: 20px;
+    transition: 0.3s;
+}
+.search-container:focus-within {
+    border-color: var(--accent);
+}
+.search-input {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    outline: none;
+    width: 150px;
+    margin-bottom: 0; /* Override global input margin */
+}
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo" onclick="location.reload()">FUISELL</div>
+    <button class="cart-trigger" onclick="toggleCart(true)">ARCHIVE (<span id="cart-count">0</span>)</button>
+</header>
+
+<nav class="cat-nav">
+    <div class="cat-item active" onclick="filterGrid('All', this)">ALL COLLECTION</div>
+    <div class="cat-item" onclick="filterGrid('Outerwear', this)">OUTERWEAR</div>
+    <div class="cat-item" onclick="filterGrid('Tops', this)">TOPS</div>
+    <div class="cat-item" onclick="filterGrid('Accessories', this)">ACCESSORIES</div>
+    
+    <div class="search-container">
+        <span style="opacity: 0.5; font-size: 0.8rem;">SEARCH</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="..." onkeyup="handleSearch()">
+    </div>
+</nav>
+
+
+<main id="home" class="view active">
+    <div class="container">
+        <div class="grid" id="product-grid"></div>
+    </div>
+</main>
+
+<main id="detail" class="view">
+    <div class="container">
+        <div class="back-btn" onclick="goHome()">← RETURN TO ARCHIVE</div>
+        <div id="detail-content"></div>
+    </div>
+</main>
+
+<div class="drawer" id="cart-drawer">
+    <div class="close-cart" onclick="toggleCart(false)">✕</div>
+    <h2 style="margin-top:0;">Your Bag</h2>
+    <div id="cart-items" style="flex:1; overflow-y:auto; margin: 30px 0;"></div>
+    <div class="cart-footer">
+        <div class="subtotal-row"><span>SUBTOTAL</span><span id="cart-subtotal">$0.00</span></div>
+        <button class="btn-full" onclick="openShipping()">Proceed to Checkout</button>
+    </div>
+</div>
+
+<div class="modal" id="shippingModal">
+    <div class="modal-box">
+        <h2>Global Shipping</h2>
+        <input type="text" id="cName" placeholder="Full Name">
+        <input type="email" id="cEmail" placeholder="Email Address">
+        <input type="text" id="cAddr" placeholder="Address Line 1">
+        <button class="btn-full" onclick="calcTotals()">Review & Pay</button>
+        <p onclick="document.getElementById('shippingModal').style.display='none'" style="text-align:center; cursor:pointer; opacity:0.5; margin-top:20px;">CANCEL</p>
+    </div>
+</div>
+
+<div class="modal" id="paymentModal">
+    <div class="modal-box" style="text-align:center;">
+        <h2>Payment Gateway</h2>
+        <div style="background:#000; padding:20px; border:1px solid #333; border-radius:10px; margin:20px 0; text-align:left;">
+            <div style="display:flex; justify-content:space-between;"><span>Subtotal</span><span id="summ-sub">$0</span></div>
+            <div style="display:flex; justify-content:space-between; color:var(--accent);"><span>Discount</span><span id="summ-disc">-$0</span></div>
+            <div style="border-top:1px solid #333; margin-top:10px; padding-top:10px; font-weight:700; display:flex; justify-content:space-between;"><span>TOTAL</span><span id="summ-total">$0</span></div>
+        </div>
+        <img src="/images/Qr.jpg" style="border:5px solid white; border-radius:10px; width: 200px; height: auto;">
+        <p style="font-size:0.8rem; opacity:0.6; margin: 20px 0;">Scan QR to pay, then click below to share order details.</p>
+        <button class="btn-full" onclick="finishOrder()">Confirm & Send via WhatsApp</button>
+    </div>
+</div>
+
+<div class="modal" id="wheelModal">
+    <div class="wheel-wrap">
+        <div class="triangle"></div>
+        <canvas id="wheelCanvas" width="400" height="400"></canvas>
+        <br>
+        <button class="btn-full" id="spinBtn" style="width:auto; padding: 15px 40px; margin-top:20px; border-radius:50px;" onclick="spin()">SPIN FOR OFFER</button>
+    </div>
+</div>
+
+<script>
+    const products = [
+        { id: 101, cat: "Outerwear", name: "Obsidian Tech Parka", price: 850, sizes: ["S", "M", "L", "XL"], img: "https://images.unsplash.com/photo-1544923246-77307dd654cb?w=1000", desc: "Brutalist silhouette, 3-layer GORE-TEX Pro.", specs: {"Material": "Gore-Tex", "Fit": "Oversized"} },
+        { id: 102, cat: "Tops", name: "Vantablack Heavy Tee", price: 120, sizes: ["S", "M", "L", "XL"], img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1000", desc: "400GSM Organic Heavyweight Cotton.", specs: {"Material": "Cotton", "Fit": "Boxy"} },
+        { id: 103, cat: "Accessories", name: "Utility Chest Rig", price: 340, sizes: ["One Size"], img: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=1000", desc: "Ballistic Nylon tactical gear.", specs: {"Material": "1000D Nylon", "Origin": "Japan"} },
+        { id: 104, cat: "Outerwear", name: "Kinetic Shell 01", price: 620, sizes: ["S", "M", "L"], img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=1000", desc: "A razor-sharp silhouette designed for movement. The articulation in the sleeves allows for total range of motion without the fabric bunching, while the matte carbon finish deflects light in a way that feels almost stealth-like.", specs: {"Material": "Carbon-Coated Nylon", "Waterproof": "20k/20k"} },
+{ id: 105, cat: "Bottoms", name: "Modular Cargo Pant", price: 480, sizes: ["28", "30", "32", "34"], img: "https://images.unsplash.com/photo-1624371414361-e6e0ed295270?w=1000", desc: "These aren't your standard cargos. Built with 14 integrated pockets that disappear into the leg line, they offer a futuristic 'tapered-tech' look. The fabric has a substantial weight but stays cool against the skin.", specs: {"Material": "Schoeller Dryskin", "Fit": "Articulated Taper"} },
+{ id: 106, cat: "Mid-Layer", name: "Void-Knit Pullover", price: 290, sizes: ["M", "L", "XL"], img: "https://images.unsplash.com/photo-1614975058789-41316d0e2e9c?w=1000", desc: "A masterclass in texture. This pullover features a 3D-ribbed structure that creates natural air pockets for insulation. It sits heavy on the body, providing a sense of physical security and warmth in a deep, light-absorbing black.", specs: {"Material": "Merino/Polyamide", "Knit": "3D Seamless"} },
+{ id: 107, cat: "Outerwear", name: "Fragment Bomber", price: 740, sizes: ["S", "M", "L", "XL"], img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=1000", desc: "Industrial aesthetics meet luxury craftsmanship. The outer shell is made from high-tenacity Dyneema that has been hand-washed to give it a lived-in, 'scrap-yard' patina while remaining virtually indestructible.", specs: {"Material": "Distressed Dyneema", "Lining": "Silk/Nylon"} },
+{ id: 108, cat: "Tops", name: "Ghost-Stitch Overshirt", price: 310, sizes: ["S", "M", "L"], img: "https://images.unsplash.com/photo-1507680434567-5739c8a21e71?w=1000", desc: "A structural overshirt with hidden snap closures and internal 'sling' straps. When unbuttoned, the collar maintains a rigid, architectural shape that frames the face perfectly.", specs: {"Material": "Ventile Cotton", "Hardware": "Cobra Snaps"} }
+    ];
+
+    let cart = [];
+    let discount = 0;
+    let selectedSize = null;
+
+    const options = [{label: "5%", value: 5}, {label: "10%", value: 10}, {label: "20%", value: 20}, {label: "15%", value: 15}];
+
+    function init() { renderGrid(products); updateCartCount(); }
+
+    function renderGrid(list) {
+        document.getElementById('product-grid').innerHTML = list.map(p => `
+            <div class="card" onclick="openProduct(${p.id})">
+                <div class="card-img"><img src="${p.img}"></div>
+                <div class="card-info">
+                    <div><b>${p.name}</b></div>
+                    <div>$${p.price}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function openProduct(id) {
+        const p = products.find(x => x.id === id);
+        selectedSize = null;
+        let sizeBtns = p.sizes.map(s => `<div class="size-opt" onclick="setProductSize(this, '${s}')">${s}</div>`).join('');
+
+        document.getElementById('detail-content').innerHTML = `
+            <div class="detail-layout">
+                <div class="detail-img"><img src="${p.img}"></div>
+                <div>
+                    <h1>${p.name}</h1>
+                    <div style="font-size:2rem; margin-bottom:20px;">$${p.price}</div>
+                    <div class="size-wrapper">
+                        <span class="size-label">SELECT SIZE</span>
+                        <div class="size-grid">${sizeBtns}</div>
+                    </div>
+                    <button class="btn-full" id="atc-btn" onclick="addToCart(${p.id})">ADD TO CART</button>
+                    <p style="margin-top:30px; opacity:0.8;">${p.desc}</p>
+                </div>
+            </div>`;
+        document.getElementById('home').classList.remove('active');
+        document.getElementById('detail').classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function setProductSize(el, s) {
+        document.querySelectorAll('.size-opt').forEach(btn => btn.classList.remove('active'));
+        el.classList.add('active');
+        selectedSize = s;
+        document.getElementById('atc-btn').innerText = "ADD TO CART";
+        document.getElementById('atc-btn').classList.remove('error');
+    }
+
+    function addToCart(id) {
+        if(!selectedSize) {
+            const btn = document.getElementById('atc-btn');
+            btn.innerText = "PLEASE SELECT SIZE";
+            btn.classList.add('error');
+            return;
+        }
+        const p = products.find(x => x.id === id);
+        cart.push({...p, size: selectedSize});
+        updateCartCount();
+        toggleCart(true);
+    }
+
+    function updateCartCount() { document.getElementById('cart-count').innerText = cart.length; }
+
+    function toggleCart(open) { 
+        document.getElementById('cart-drawer').classList.toggle('open', open); 
+        if(open) {
+            let sub = cart.reduce((a,b)=>a+b.price, 0);
+            document.getElementById('cart-items').innerHTML = cart.map((item, idx) => `
+                <div style="display:flex; gap:15px; margin-bottom:15px; border-bottom:1px solid #222; padding-bottom:10px;">
+                    <img src="${item.img}" style="width:60px; height:60px; object-fit:cover;">
+                    <div style="flex:1;">
+                        <b>${item.name}</b><br>
+                        <small style="opacity:0.5;">Size: ${item.size}</small><br>
+                        $${item.price}
+                    </div>
+                    <span onclick="cart.splice(${idx},1); toggleCart(true); updateCartCount();" style="cursor:pointer;">✕</span>
+                </div>
+            `).join('');
+            document.getElementById('cart-subtotal').innerText = `$${sub.toFixed(2)}`;
+        }
+    }
+
+    function goHome() {
+        document.getElementById('detail').classList.remove('active');
+        document.getElementById('home').classList.add('active');
+    }
+
+    function openShipping() { 
+        if(cart.length === 0) return; 
+        toggleCart(false); 
+        document.getElementById('shippingModal').style.display='flex'; 
+    }
+
+    function calcTotals() {
+        const sub = cart.reduce((a,b)=>a+b.price, 0);
+        const discAmt = sub * (discount/100);
+        document.getElementById('summ-sub').innerText = `$${sub}`;
+        document.getElementById('summ-disc').innerText = `-$${discAmt.toFixed(2)}`;
+        document.getElementById('summ-total').innerText = `$${(sub - discAmt).toFixed(2)}`;
+        document.getElementById('shippingModal').style.display='none';
+        document.getElementById('paymentModal').style.display='flex';
+    }
+
+    function finishOrder() {
+        const orderId = "FSL-" + Math.floor(Math.random()*9000+1000);
+        const total = document.getElementById('summ-total').innerText;
+        
+        // Build the item list with sizes for WhatsApp
+        let itemsString = cart.map(i => `- ${i.name} (Size: ${i.size})`).join('%0A');
+        
+        const message = `*FUISELL NEW ORDER: ${orderId}*%0A%0A` +
+                        `*Items:*%0A${itemsString}%0A%0A` +
+                        `*Total Amount:* ${total}%0A` +
+                        `*Customer:* ${document.getElementById('cName').value}%0A` +
+                        `*Address:* ${document.getElementById('cAddr').value}%0A%0A` +
+                        `Please Attach The payment Screenshot to confirm order.`;
+
+        window.open(`https://wa.me/919727209868?text=${message}`);
+        cart = []; updateCartCount(); location.reload();
+    }
+
+    // --- Wheel Logic ---
+    function drawWheel() {
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        const arc = Math.PI * 2 / options.length;
+        options.forEach((opt, i) => {
+            ctx.beginPath();
+            ctx.fillStyle = i % 2 ? '#111' : '#222';
+            ctx.moveTo(200, 200); ctx.arc(200, 200, 200, i * arc, (i + 1) * arc); ctx.fill();
+            ctx.save(); ctx.translate(200, 200); ctx.rotate(i * arc + arc / 2);
+            ctx.fillStyle = "white"; ctx.font = "bold 20px Syne"; ctx.fillText(opt.label, 100, 10); ctx.restore();
+        });
+    }
+
+    function spin() {
+        const wheel = document.getElementById('wheelCanvas');
+        const deg = 3600 + Math.random() * 360;
+        wheel.style.transform = `rotate(${deg}deg)`;
+        setTimeout(() => {
+            const index = Math.floor(((deg % 360)) / (360/options.length));
+            discount = options[index].value;
+            alert(`OFFER APPLIED: ${options[index].label} OFF!`);
+            document.getElementById('wheelModal').style.display = 'none';
+        }, 5000);
+    }
+
+    window.onload = () => {
+        init();
+        setTimeout(() => {
+            drawWheel();
+            document.getElementById('wheelModal').style.display='flex';
+        }, 15000);
+    }
+    // Function to handle category filtering
+function filterGrid(category, element) {
+    // UI Update
+    document.querySelectorAll('.cat-item').forEach(item => item.classList.remove('active'));
+    element.classList.add('active');
+    document.getElementById('searchInput').value = ''; // Clear search when category changes
+
+    if (category === 'All') {
+        renderGrid(products);
+    } else {
+        const filtered = products.filter(p => p.cat === category);
+        renderGrid(filtered);
+    }
+}
+
+// Function to handle search input
+function handleSearch() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    
+    // Reset active category UI to 'ALL' when searching
+    document.querySelectorAll('.cat-item').forEach(item => item.classList.remove('active'));
+    document.querySelector('.cat-item').classList.add('active');
+
+    const filtered = products.filter(p => 
+        p.name.toLowerCase().includes(query) || 
+        p.cat.toLowerCase().includes(query) ||
+        p.desc.toLowerCase().includes(query)
+    );
+    
+    renderGrid(filtered);
+}
+
+</script>
+    <footer>
+        <div class="footer-col">
+            <div class="logo" style="margin-bottom: 20px; width: 120px;"><img src="/images/logo.jpg" style="width:100%; height:auto;"></div>
+            <p style="opacity: 0.5; max-width: 300px; font-size: 0.9rem;">
+                A digital atelier crafting architectural silhouettes for the modern brutalist. Founded in 2026.
+            </p>
+        </div>
+        <div class="footer-col">
+            <h4>COLLECTIONS</h4>
+            <a href="/new-arrivals.html" class="footer-link">New Arrivals</a>
+            <a href="/best-seller.html" class="footer-link">Best Sellers</a>
+            <a href="#" class="footer-link">Archive Sale</a>
+        </div>
+        <div class="footer-col">
+            <h4>CLIENT SERVICES</h4>
+            <a href="policy.html" class="footer-link">Shipping & Returns</a>
+            <a href="guide.html" class="footer-link">Size Guide</a>
+            <a href="care.html" class="footer-link">Care Instructions</a>
+        </div>
+        <div class="footer-col">
+            <h4>CONNECT</h4>
+            <a href="#" class="footer-link">Instagram</a>
+            <a href="https://wa.me/919996809128?text" class="footer-link">WhatsApp</a>
+
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEST SELLERS | FUISELL ARCHIVE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --bg: #050505; --text: #ffffff; --accent: #3b82f6; 
+            --glass: rgba(255, 255, 255, 0.05); --border: rgba(255, 255, 255, 0.15);
+            --surface: #111111;
+        }
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body { 
+            margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text);
+            overflow-x: hidden; scroll-behavior: smooth;
+        }
+        h1, h2, h3, .logo, .rank-num { font-family: 'Syne', sans-serif; text-transform: uppercase; }
+
+        /* --- Header & Nav --- */
+        header {
+            position: fixed; top: 0; width: 100%; height: 90px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; z-index: 1000; background: rgba(5,5,5,0.9); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: 6px; cursor: pointer; }
+        
+        .cat-nav {
+            position: fixed; top: 90px; width: 100%; z-index: 999;
+            display: flex; justify-content: center; align-items: center; gap: 30px; padding: 15px;
+            background: rgba(5,5,5,0.95); border-bottom: 1px solid var(--border);
+        }
+        .search-container {
+            display: flex; align-items: center; background: var(--surface);
+            border: 1px solid var(--border); padding: 5px 15px; border-radius: 4px;
+        }
+        .search-input {
+            background: transparent; border: none; color: white; outline: none;
+            font-size: 0.75rem; width: 150px; font-family: 'Inter';
+        }
+
+        /* --- Content --- */
+        .view { padding: 220px 5% 100px; max-width: 1400px; margin: auto; }
+        .page-header { margin-bottom: 80px; text-align: center; }
+        .page-header h1 { font-size: clamp(2rem, 8vw, 5rem); margin: 0; letter-spacing: -2px; }
+
+        /* --- Best Seller Grid --- */
+        .bestseller-grid { display: grid; grid-template-columns: 1fr; gap: 100px; }
+        
+        .row { display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center; }
+        .row:nth-child(even) { direction: rtl; }
+        .row:nth-child(even) .row-text { direction: ltr; }
+
+        .row-img { width: 100%; aspect-ratio: 1/1; background: #111; position: relative; overflow: hidden; }
+        .row-img img { width: 100%; height: 100%; object-fit: cover; transition: 1s; }
+        .row:hover img { transform: scale(1.05); }
+
+        .rank-num { 
+            position: absolute; top: -20px; left: -20px; font-size: 8rem; 
+            color: transparent; -webkit-text-stroke: 1px blue; z-index: 2;
+        }
+
+        .row-text h2 { font-size: 2.5rem; margin-bottom: 10px; }
+        .row-text p { opacity: 0.6; max-width: 400px; margin-bottom: 30px; }
+        
+        .btn-buy { 
+            display: inline-block; padding: 15px 40px; border: 1px solid white; 
+            color: white; text-decoration: none; font-weight: 700; font-size: 0.8rem;
+            transition: 0.3s;
+        }
+        .btn-buy:hover { background: white; color: black; }
+
+        @media (max-width: 768px) {
+            .row { grid-template-columns: 1fr; gap: 30px; }
+            .rank-num { font-size: 4rem; top: 10px; left: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo" onclick="window.location.href='index.html'">FUISELL</div>
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="SEARCH BEST SELLERS" onkeyup="searchBest()">
+    </div>
+</header>
+
+<main class="view">
+    <div class="page-header">
+        <h1>MOST WANTED</h1>
+        <p style="opacity:0.4; letter-spacing: 4px;">ARCHIVE ESSENTIALS 2026</p>
+    </div>
+
+    <div class="bestseller-grid" id="bestGrid">
+        <div class="row" data-name="Obsidian Tech Parka">
+            <div class="row-img">
+                <span class="rank-num">01</span>
+                <img src="https://images.unsplash.com/photo-1544923246-77307dd654cb?w=1000">
+            </div>
+            <div class="row-text">
+                <h2>OBSIDIAN TECH PARKA</h2>
+                <p>The core of the FUISELL silhouette. Engineered with triple-layer Gore-Tex and modular storage units. Our most requested piece since inception.</p>
+                <a href="#" class="btn-buy">VIEW PRODUCT — $850</a>
+            </div>
+        </div>
+
+        <div class="row" data-name="Kinetic Shell">
+            <div class="row-img">
+                <span class="rank-num">02</span>
+                <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=1000">
+            </div>
+            <div class="row-text">
+                <h2>KINETIC SHELL 01</h2>
+                <p>An ultra-lightweight transition layer featuring articulated joints for maximum mobility in urban environments.</p>
+                <a href="#" class="btn-buy">VIEW PRODUCT — $620</a>
+            </div>
+        </div>
+
+        <div class="row" data-name="Modular Cargo Pant">
+            <div class="row-img">
+                <span class="rank-num">03</span>
+                <img src="https://pronk.in/cdn/shop/files/3_b006df62-ebfe-49d0-96b3-bdadbb0dc01a.jpg?v=1727691116&width=540">
+            </div>
+            <div class="row-text">
+                <h2>MODULAR CARGO PANT</h2>
+                <p>Constructed from Schoeller Dryskin. Features 14 hidden pockets and a multi-stage tapered adjustment system.</p>
+                <a href="#" class="btn-buy">VIEW PRODUCT — $480</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function searchBest() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const items = document.querySelectorAll('.row');
+        
+        items.forEach(item => {
+            const name = item.getAttribute('data-name').toLowerCase();
+            if (name.includes(query)) {
+                item.style.display = 'grid';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

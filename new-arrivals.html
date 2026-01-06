@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEW ARRIVALS | FUISELL 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --bg: #050505; --text: #ffffff; --accent: #3b82f6; 
+            --glass: rgba(255, 255, 255, 0.05); --border: rgba(255, 255, 255, 0.15);
+            --surface: #111111;
+        }
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body { 
+            margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text);
+            overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6;
+        }
+        h1, h2, h3, .logo, .btn-main { font-family: 'Syne', sans-serif; text-transform: uppercase; }
+
+        /* --- Header & Nav --- */
+        header {
+            position: fixed; top: 0; width: 100%; height: 90px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; z-index: 1000; background: rgba(5,5,5,0.9); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: 6px; cursor: pointer; }
+        
+        .cat-nav {
+            position: fixed; top: 90px; width: 100%; z-index: 999;
+            display: flex; justify-content: center; align-items: center; gap: 30px; padding: 15px;
+            background: rgba(5,5,5,0.95); border-bottom: 1px solid var(--border);
+        }
+        .cat-item { font-size: 0.7rem; font-weight: 700; opacity: 0.5; cursor: pointer; transition: 0.3s; letter-spacing: 2px; }
+        .cat-item.active { opacity: 1; border-bottom: 1px solid white; }
+
+        /* --- Search Bar --- */
+        .search-wrap {
+            display: flex; align-items: center; background: #111; border: 1px solid #333;
+            padding: 5px 15px; border-radius: 4px; margin-left: 20px;
+        }
+        .search-input {
+            background: transparent; border: none; color: white; outline: none;
+            font-size: 0.75rem; width: 120px; padding: 5px; font-family: 'Inter';
+        }
+
+        /* --- Grid --- */
+        .view { padding: 200px 5% 100px; min-height: 100vh; }
+        .hero-title { font-size: 4vw; margin-bottom: 60px; border-left: 4px solid var(--accent); padding-left: 30px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; }
+        
+        .card { position: relative; transition: 0.5s; cursor: pointer; }
+        .badge { position: absolute; top: 20px; left: 20px; background: var(--accent); color: white; padding: 5px 12px; font-size: 10px; font-weight: 800; z-index: 2; border-radius: 2px; }
+        .card-img { width: 100%; aspect-ratio: 4/5; background: #111; overflow: hidden; border: 1px solid var(--border); }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); transition: 0.8s; }
+        .card:hover img { filter: grayscale(0); transform: scale(1.05); }
+        
+        .card-info { margin-top: 15px; display: flex; justify-content: space-between; }
+        .price { opacity: 0.6; }
+
+        /* --- Footer --- */
+footer { 
+            background: #000; border-top: 1px solid var(--border); padding: 80px 5% 40px; margin-top: 100px; 
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; 
+        }
+        .footer-col h4 { opacity: 0.4; margin-bottom: 25px; font-size: 0.8rem; letter-spacing: 2px; }
+        .footer-link { display: block; color: white; text-decoration: none; margin-bottom: 15px; opacity: 0.7; transition: 0.3s; font-size: 0.9rem; }
+        .footer-link:hover { opacity: 1; transform: translateX(5px); }
+
+        @media (max-width: 768px) {
+            .cat-nav { overflow-x: auto; justify-content: flex-start; padding: 15px 5%; }
+            .hero-title { font-size: 2.5rem; }
+            footer { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">FUISELL</div>
+    <div class="btn-main" style="font-size: 0.7rem; letter-spacing: 2px;">CART (0)</div>
+</header>
+
+<nav class="cat-nav">
+    <div class="cat-item active" onclick="filter('All')">NEW ARRIVALS</div>
+    <div class="cat-item" onclick="filter('Outerwear')">OUTERWEAR</div>
+    <div class="cat-item" onclick="filter('Footwear')">FOOTWEAR</div>
+    <div class="search-wrap">
+        <input type="text" id="searchInput" class="search-input" placeholder="SEARCH ARCHIVE" onkeyup="search()">
+    </div>
+</nav>
+
+<main class="view">
+    <h1 class="hero-title">SPRING/SUMMER <br>2026 DROP</h1>
+    <div class="grid" id="arrival-grid">
+        </div>
+</main>
+
+   <footer>
+        <div class="footer-col">
+            <div class="logo" style="margin-bottom: 20px; width: 120px;"><img src="/images/logo.jpg" style="width:100%; height:auto;"></div>
+            <p style="opacity: 0.5; max-width: 300px; font-size: 0.9rem;">
+                A digital atelier crafting architectural silhouettes for the modern brutalist. Founded in 2026.
+            </p>
+        </div>
+        <div class="footer-col">
+            <h4>COLLECTIONS</h4>
+            <a href="new-arrivals.html" class="footer-link">New Arrivals</a>
+            <a href="best-seller.html" class="footer-link">Best Sellers</a>
+            <a href="#" class="footer-link">Archive Sale</a>
+        </div>
+        <div class="footer-col">
+            <h4>CLIENT SERVICES</h4>
+            <a href="policy.html" class="footer-link">Shipping & Returns</a>
+            <a href="guide.html" class="footer-link">Size Guide</a>
+            <a href="care.html" class="footer-link">Care Instructions</a>
+        </div>
+        <div class="footer-col">
+            <h4>CONNECT</h4>
+            <a href="#" class="footer-link">Instagram</a>
+            <a href="https://wa.me/919996809128?text" class="footer-link">WhatsApp</a>
+          
+        </div>
+    </footer>
+
+<script>
+    const newItems = [
+        { id: 201, cat: "Outerwear", name: "Zenith Hardshell", price: "$920", img: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=800" },
+        { id: 202, cat: "Outerwear", name: "Aero-Tech Gilet", price: "$450", img: "https://images.unsplash.com/photo-1544923246-77307dd654cb?w=800" },
+        { id: 203, cat: "Footwear", name: "Vertex Combat Boot", price: "$680", img: "https://images.unsplash.com/photo-1520639889413-5b55869b03d6?w=800" },
+        { id: 204, cat: "Tops", name: "Compression Base-01", price: "$180", img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800" },
+        { id: 205, cat: "Outerwear", name: "Cinder Parka V2", price: "$1100", img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800" },
+        { id: 206, cat: "Footwear", name: "Flux Runner", price: "$320", img: "https://images.unsplash.com/photo-1512374382149-4332c6c021f1?w=800" }
+    ];
+
+    function displayItems(data) {
+        const grid = document.getElementById('arrival-grid');
+        grid.innerHTML = data.map(item => `
+            <div class="card">
+                <div class="badge">NEW</div>
+                <div class="card-img">
+                    <img src="${item.img}" alt="${item.name}">
+                </div>
+                <div class="card-info">
+                    <div style="font-weight: 700;">${item.name}</div>
+                    <div class="price">${item.price}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function search() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = newItems.filter(i => i.name.toLowerCase().includes(query));
+        displayItems(filtered);
+    }
+
+    function filter(cat) {
+        document.querySelectorAll('.cat-item').forEach(el => el.classList.remove('active'));
+        event.target.classList.add('active');
+        if(cat === 'All') return displayItems(newItems);
+        const filtered = newItems.filter(i => i.cat === cat);
+        displayItems(filtered);
+    }
+
+    // Initial Load
+    displayItems(newItems);
+</script>
+
+</body>
+</html>
