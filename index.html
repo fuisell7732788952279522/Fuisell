@@ -237,9 +237,26 @@
         <button class="btn-full" id="spinBtn" style="width:auto; padding: 15px 40px; margin-top:20px; border-radius:50px;" onclick="spin()">SPIN FOR OFFER</button>
     </div>
 </div>
-
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script>
-    // Updated Products Array with 'rating' and 'longDesc'
+// ===== FIREBASE INIT =====
+firebase.initializeApp({
+  apiKey: "AIzaSyAUuaxF108xjOItNladXgGW9Sjk56F2IcA",
+  authDomain: "fuisell.firebaseapp.com",
+  projectId: "fuisell",
+  storageBucket: "fuisell.firebasestorage.app",
+  messagingSenderId: "631961313246",
+  appId: "1:631961313246:web:34de5a7211375bb5db474f"
+});
+
+const auth = firebase.auth();
+let currentUser = null;
+
+auth.onAuthStateChanged(user => {
+  currentUser = user;
+});
     const products = [
         { 
             id: 101, 
@@ -424,18 +441,25 @@
         document.getElementById('atc-btn').classList.remove('error');
     }
 
-    function addToCart(id) {
-        if(!selectedSize) {
-            const btn = document.getElementById('atc-btn');
-            btn.innerText = "PLEASE SELECT SIZE";
-            btn.classList.add('error');
-            return;
-        }
-        const p = products.find(x => x.id === id);
-        cart.push({...p, size: selectedSize});
-        updateCartCount();
-        toggleCart(true);
+   function addToCart(id) {
+    
+    if (!currentUser) {
+        document.getElementById('authModal').style.display = 'flex';
+        return;
     }
+    
+    if (!selectedSize) {
+        const btn = document.getElementById('atc-btn');
+        btn.innerText = "PLEASE SELECT SIZE";
+        btn.classList.add('error');
+        return;
+    }
+    
+    const p = products.find(x => x.id === id);
+    cart.push({ ...p, size: selectedSize });
+    updateCartCount();
+    toggleCart(true);
+}
 
     function updateCartCount() { document.getElementById('cart-count').innerText = cart.length; }
 
@@ -523,12 +547,8 @@
     }
 
     window.onload = () => {
-        init();
-        setTimeout(() => {
-            drawWheel();
-            document.getElementById('wheelModal').style.display='flex';
-        }, 15000);
-    }
+    init();
+}
 
     function filterGrid(category, element) {
         document.querySelectorAll('.cat-item').forEach(item => item.classList.remove('active'));
@@ -556,7 +576,34 @@
         
         renderGrid(filtered);
     }
+function signup() {
+  auth.createUserWithEmailAndPassword(
+    document.getElementById('authEmail').value,
+    document.getElementById('authPass').value
+  )
+  .then(() => {
+    document.getElementById('authModal').style.display = 'none';
+    alert("Account created successfully");
+    openSpinWheel(); // ✅ SHOW SPIN AFTER SIGNUP
+  })
+  .catch(err => alert(err.message));
+}
 
+function login() {
+  auth.signInWithEmailAndPassword(
+    document.getElementById('authEmail').value,
+    document.getElementById('authPass').value
+  )
+  .then(() => {
+    document.getElementById('authModal').style.display = 'none';
+    openSpinWheel(); // ✅ SHOW SPIN AFTER LOGIN
+  })
+  .catch(err => alert(err.message));
+}
+function openSpinWheel() {
+    drawWheel();
+    document.getElementById('wheelModal').style.display = 'flex';
+}
 </script>
     <footer>
         <div class="footer-col">
@@ -584,5 +631,21 @@
 
         </div>
     </footer>
+    <div class="modal" id="authModal">
+  <div class="modal-box">
+    <h2>Login / Sign Up</h2>
+
+    <input type="email" id="authEmail" placeholder="Email">
+    <input type="password" id="authPass" placeholder="Password">
+
+    <button class="btn-full" onclick="login()">Login</button>
+    <button class="btn-full" style="margin-top:10px;" onclick="signup()">Create Account</button>
+
+    <p onclick="document.getElementById('authModal').style.display='none'"
+       style="text-align:center; margin-top:20px; opacity:0.5; cursor:pointer;">
+      Cancel
+    </p>
+  </div>
+</div>
 </body>
 </html>
