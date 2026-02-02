@@ -209,7 +209,10 @@
         <h2>Global Shipping</h2>
         <input type="text" id="cName" placeholder="Full Name">
         <input type="email" id="cEmail" placeholder="Email Address">
-        <input type="text" id="cAddr" placeholder="Address Line 1">
+        <input type="text" id="cAddr" placeholder="House no and Appartment">
+         <input type="text" id="bAddr" placeholder="Area">
+          <input type="text" id="aAddr" placeholder="City">
+           <input type="text" id="Addr" placeholder="State">
         <button class="btn-full" onclick="calcTotals()">Review & Pay</button>
         <p onclick="document.getElementById('shippingModal').style.display='none'" style="text-align:center; cursor:pointer; opacity:0.5; margin-top:20px;">CANCEL</p>
     </div>
@@ -224,7 +227,7 @@
             <div style="border-top:1px solid #333; margin-top:10px; padding-top:10px; font-weight:700; display:flex; justify-content:space-between;"><span>TOTAL</span><span id="summ-total">$0</span></div>
         </div>
         <img src="images/Qr.jpg" style="border:5px solid white; border-radius:10px; width: 200px; height: auto;">
-        <p style="font-size:0.8rem; opacity:0.6; margin: 20px 0;">Scan QR to pay, then click below to share order details.</p>
+        <p style="font-size:0.8rem; opacity:0.6; margin: 20px 0; color:red;">*Scan QR to pay, then click below to share order details. If the Screenshot is sent with the Payment Confirmation Then order will not be Confirmed*</p>
         <button class="btn-full" onclick="finishOrder()">Confirm & Send via WhatsApp</button>
     </div>
 </div>
@@ -513,10 +516,13 @@ auth.onAuthStateChanged(user => {
                         `*Items:*%0A${itemsString}%0A%0A` +
                         `*Total Amount:* ${total}%0A` +
                         `*Customer:* ${document.getElementById('cName').value}%0A` +
-                        `*Address:* ${document.getElementById('cAddr').value}%0A%0A` +
+                        `*Appartment:* ${document.getElementById('cAddr').value}%0A%0A` +
+                        `*Area:* ${document.getElementById('bAddr').value}%0A%0A` +
+                        `*City:* ${document.getElementById('aAddr').value}%0A%0A` +
+                        `*State:* ${document.getElementById('Addr').value}%0A%0A`+
                         `Please Attach The payment Screenshot to confirm order.`;
 
-        window.open(`https://wa.me/919727209868?text=${message}`);
+        window.open(`https://wa.me/919996809128?text=${message}`);
         cart = []; updateCartCount(); location.reload();
     }
 
