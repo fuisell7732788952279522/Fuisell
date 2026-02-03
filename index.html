@@ -18,7 +18,7 @@
         }
         h1, h2, h3, .logo, .btn-main { font-family: 'Syne', sans-serif; text-transform: uppercase; }
 
-        /* --- Global Header --- */
+        
         header {
             position: fixed; top: 0; width: 100%; height: 90px;
             display: flex; justify-content: space-between; align-items: center;
@@ -32,7 +32,7 @@
         }
         .cart-trigger:hover { transform: scale(1.05); }
 
-        /* --- Category Navigation --- */
+        
         .cat-nav {
             position: fixed; top: 90px; width: 100%; z-index: 999;
             display: flex; justify-content: center; gap: 40px; padding: 20px;
@@ -41,15 +41,14 @@
         .cat-item { font-size: 0.75rem; font-weight: 700; opacity: 0.5; cursor: pointer; transition: 0.3s; letter-spacing: 2px; }
         .cat-item.active { opacity: 1; color: white; text-decoration: underline; text-underline-offset: 6px; }
 
-        /* --- Layout System --- */
+        
         .view { display: none; padding-top: 180px; padding-bottom: 50px; min-height: 100vh; animation: fadeIn 0.6s ease; }
         .view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .container { max-width: 1400px; margin: auto; padding: 0 5%; }
 
-        /* --- Product Grid --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; }
+              .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; }
         .card { cursor: pointer; }
         .card-img {
             width: 100%; aspect-ratio: 3/4; background: var(--surface); border-radius: 6px; overflow: hidden;
@@ -60,7 +59,7 @@
         .card:hover img { transform: scale(1.05); filter: saturate(1); }
         .card-info { margin-top: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
 
-        /* --- Detail View --- */
+        
         .back-btn { 
             display: inline-flex; align-items: center; gap: 10px; padding: 10px 20px; 
             border: 1px solid var(--border); border-radius: 30px; margin-bottom: 40px; 
@@ -75,11 +74,11 @@
         .star-rating { color: #ffd700; font-size: 1.2rem; margin-bottom: 15px; letter-spacing: 2px; }
         .long-desc { opacity: 0.7; margin-top: 30px; font-size: 1rem; line-height: 1.8; border-top: 1px solid #222; padding-top: 30px; }
 
-        /* Suggestions Section */
+        
         .suggestion-section { margin-top: 100px; border-top: 1px solid var(--border); padding-top: 50px; }
         .suggestion-header { font-family: 'Syne', sans-serif; font-size: 1.5rem; margin-bottom: 40px; text-transform: uppercase; }
 
-        /* Size Selector Styling */
+        
         .size-wrapper { margin-bottom: 30px; }
         .size-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; opacity: 0.5; margin-bottom: 15px; display: block; }
         .size-grid { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -91,7 +90,7 @@
         .size-opt:hover { border-color: #666; color: white; }
         .size-opt.active { background: white; color: black; border-color: white; }
 
-        /* --- Cart Drawer --- */
+        
         .drawer { 
             position: fixed; top: 0; right: 0; width: 500px; height: 100%; background: #0a0a0a; 
             border-left: 1px solid var(--border); z-index: 3000; transform: translateX(100%); 
@@ -109,7 +108,7 @@
         .cart-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid #222; }
         .subtotal-row { display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; }
 
-        /* --- Modals --- */
+        
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 5000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
         .modal-box { width: 100%; max-width: 550px; background: #111; padding: 50px; border: 1px solid var(--border); border-radius: 20px; max-height: 90vh; overflow-y: auto; }
         
@@ -123,12 +122,12 @@
         }
         .btn-full.error { background: #ff4444; color: white; }
 
-        /* --- Wheel --- */
+        
         .wheel-wrap { position: relative; text-align: center; }
         #wheelCanvas { transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1); will-change: transform; }
         .triangle { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 30px solid var(--accent); z-index: 10; }
         
-        /* --- Footer --- */
+        
         footer { 
             background: #000; border-top: 1px solid var(--border); padding: 80px 5% 40px; margin-top: 100px; 
             display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; 
@@ -137,7 +136,7 @@
         .footer-link { display: block; color: white; text-decoration: none; margin-bottom: 15px; opacity: 0.7; transition: 0.3s; font-size: 0.9rem; }
         .footer-link:hover { opacity: 1; transform: translateX(5px); }
         
-        /* --- Search Bar Styling --- */
+        
         .search-container {
             display: flex;
             align-items: center;
@@ -240,11 +239,11 @@
         <button class="btn-full" id="spinBtn" style="width:auto; padding: 15px 40px; margin-top:20px; border-radius:50px;" onclick="spin()">SPIN FOR OFFER</button>
     </div>
 </div>
-<!-- Firebase SDKs -->
+
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script>
-// ===== FIREBASE INIT =====
+
 firebase.initializeApp({
   apiKey: "AIzaSyAUuaxF108xjOItNladXgGW9Sjk56F2IcA",
   authDomain: "fuisell.firebaseapp.com",
@@ -379,7 +378,7 @@ auth.onAuthStateChanged(user => {
         `).join('');
     }
 
-    // Function to generate stars
+    
     function getStars(rating) {
         const full = Math.floor(rating);
         const half = rating % 1 >= 0.5 ? 1 : 0;
@@ -392,10 +391,9 @@ auth.onAuthStateChanged(user => {
         selectedSize = null;
         let sizeBtns = p.sizes.map(s => `<div class="size-opt" onclick="setProductSize(this, '${s}')">${s}</div>`).join('');
         
-        // Generate Related Products (Suggestions)
-        const suggestions = products
-            .filter(item => item.cat === p.cat && item.id !== p.id) // Same category, different item
-            .slice(0, 3) // Limit to 3 items
+         const suggestions = products
+            .filter(item => item.cat === p.cat && item.id !== p.id) 
+            .slice(0, 3) 
             .map(item => `
                 <div class="card" onclick="openProduct(${item.id})">
                     <div class="card-img" style="aspect-ratio:1/1;"><img src="${item.img}"></div>
@@ -526,7 +524,6 @@ auth.onAuthStateChanged(user => {
         cart = []; updateCartCount(); location.reload();
     }
 
-    // --- Wheel Logic ---
     function drawWheel() {
         const canvas = document.getElementById('wheelCanvas');
         const ctx = canvas.getContext('2d');
@@ -590,7 +587,7 @@ function signup() {
   .then(() => {
     document.getElementById('authModal').style.display = 'none';
     alert("Account created successfully");
-    openSpinWheel(); // ✅ SHOW SPIN AFTER SIGNUP
+    openSpinWheel(); 
   })
   .catch(err => alert(err.message));
 }
@@ -602,7 +599,7 @@ function login() {
   )
   .then(() => {
     document.getElementById('authModal').style.display = 'none';
-    openSpinWheel(); // ✅ SHOW SPIN AFTER LOGIN
+    openSpinWheel(); 
   })
   .catch(err => alert(err.message));
 }
